@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 from ..core.base import BaseSimulation, SimulationResult
 from ..monte_carlo.pi_estimation import PiEstimationMC
 
-class PiEstimationFailureAnalysis:
+class FailureAnalysis:
     """
     Comprehensive failure analysis for Monte Carlo π estimation simulation.
     
@@ -1734,120 +1734,4 @@ class PiEstimationFailureAnalysis:
             'needs_attention': self.reliability_score < 0.7,
             'production_ready': self.reliability_score >= 0.9 and summary['failure_rate'] < 0.05
         }
-
-
-# Example usage and testing functions
-def run_comprehensive_failure_analysis():
-    """Run a comprehensive failure analysis example"""
-    print("Running comprehensive Monte Carlo π estimation failure analysis...")
-    
-    # Create failure analyzer
-    analyzer = PiEstimationFailureAnalysis(
-        sample_sizes=[1000, 10000, 100000, 1000000],
-        n_runs_per_size=50,
-        failure_threshold=0.05,  # 5% error threshold
-        timeout_seconds=30,
-        confidence_level=0.95
-    )
-    
-    # Run analysis
-    results = analyzer.run_analysis()
-    
-    # Print summary
-    print("\n" + "="*60)
-    print("FAILURE ANALYSIS COMPLETE")
-    print("="*60)
-    
-    summary = analyzer.get_failure_summary()
-    print(f"Reliability Score: {summary['reliability_score']:.3f}")
-    print(f"Total Runs: {summary['total_runs']}")
-    print(f"Total Failures: {summary['total_failures']}")
-    print(f"Failure Rate: {summary['failure_rate']:.3f}")
-    print(f"Production Ready: {summary['production_ready']}")
-    
-    if summary['most_common_failure']:
-        print(f"Most Common Failure: {summary['most_common_failure']}")
-    
-    # Generate visualizations
-    analyzer.visualize_failures()
-    
-    # Export report
-    filename = analyzer.export_results()
-    
-    return analyzer, results
-
-
-def run_targeted_failure_analysis():
-    """Run targeted analysis focusing on specific failure modes"""
-    print("Running targeted failure analysis...")
-    
-    # Create analyzer with more aggressive failure detection
-    analyzer = PiEstimationFailureAnalysis(
-        sample_sizes=[10000, 100000],
-        n_runs_per_size=100,
-        failure_threshold=0.01,  # Stricter threshold
-        timeout_seconds=10,      # Shorter timeout
-        confidence_level=0.99    # Higher confidence level
-    )
-    
-    # Run analysis
-    results = analyzer.run_analysis()
-    
-    # Focus on specific failure types
-    critical_failures = [fm for fm in analyzer.failure_modes 
-                        if fm['type'] in ['execution_failure', 'timeout', 'extreme_outlier']]
-    
-    print(f"\nCritical failures detected: {len(critical_failures)}")
-    for failure in critical_failures[:5]:  # Show first 5
-        print(f"  - {failure['type']}: {failure['description']}")
-    
-    return analyzer
-
-
-def benchmark_failure_detection():
-    """Benchmark the failure detection system itself"""
-    print("Benchmarking failure detection system...")
-    
-    start_time = time.time()
-    
-    # Run multiple analyses with different parameters
-    configurations = [
-        {'sample_sizes': [1000, 10000], 'n_runs_per_size': 20},
-        {'sample_sizes': [100000], 'n_runs_per_size': 50},
-        {'sample_sizes': [1000000], 'n_runs_per_size': 10}
-    ]
-    
-    results = []
-    for config in configurations:
-        analyzer = PiEstimationFailureAnalysis(**config)
-        result = analyzer.run_analysis()
-        results.append({
-            'config': config,
-            'reliability_score': analyzer.reliability_score,
-            'failure_count': len(analyzer.failure_modes),
-            'analysis_time': result.get('total_analysis_time', 0)
-        })
-    
-    total_time = time.time() - start_time
-    
-    print(f"\nBenchmark Results (Total time: {total_time:.2f}s)")
-    print("-" * 50)
-    for i, result in enumerate(results, 1):
-        config = result['config']
-        print(f"Config {i}: {config['sample_sizes']} x {config['n_runs_per_size']} runs")
-        print(f"  Reliability: {result['reliability_score']:.3f}")
-        print(f"  Failures: {result['failure_count']}")
-        print(f"  Time: {result['analysis_time']:.2f}s")
-        print()
-    
-    return results
-
-
-if __name__ == "__main__":
-    # Run comprehensive analysis
-    analyzer, results = run_comprehensive_failure_analysis()
-    
-    # Print detailed report
-    print("\n" + analyzer.generate_report())
-
 

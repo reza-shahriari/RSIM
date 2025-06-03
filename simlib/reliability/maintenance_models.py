@@ -7,7 +7,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 from ..core.base import BaseSimulation, SimulationResult
 
-class PreventiveMaintenances(BaseSimulation):
+class PreventiveMaintenance(BaseSimulation):
     """
     Monte Carlo simulation for preventive maintenance optimization.
     
