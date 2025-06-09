@@ -24,6 +24,28 @@ pip install RSIM
 
 ---
 
+
+## 📚 Integration with RSIM
+
+This module seamlessly integrates with the RSIM ecosystem:
+
+```python
+# Access through RSIM package
+from RSIM.bootstrap import CrossValidationSimulation
+
+# Follows RSIM base simulation interface
+from RSIM.core.base import BaseSimulation
+assert issubclass(CrossValidationSimulation, BaseSimulation)
+
+# Compatible with RSIM result format
+result = cv_sim.run(X, y)
+print(result.simulation_name)
+print(result.execution_time)
+print(result.statistics)
+```
+
+---
+
 ### ▶️ `BootstrapConfidenceInterval`
 > Perform powerful **distribution-free confidence interval estimation** via bootstrap resampling, supporting multiple methods and statistical metrics.
 
@@ -363,13 +385,6 @@ ControlVariates(
 
 ---
 
-# Bootstrap Cross-Validation Simulation Module
-
-This module provides comprehensive cross-validation simulation capabilities for machine learning model evaluation, implementing various CV strategies with detailed statistical analysis and visualization.
-
-
-## 🧠 Key Concepts (Classes and Usage)
-
 ### ▶️ `CrossValidationSimulation`
 > Perform comprehensive **machine learning model evaluation** via cross-validation, supporting multiple CV strategies, algorithms, and statistical analysis methods.
 
@@ -585,41 +600,6 @@ cv_mc.visualize(show_fold_details=True)
 - Varma, S. & Simon, R. (2006). *Bias in error estimation when using cross-validation*
 
 </details>
-
----
-
-## 🛠 Installation
-
-```bash
-pip install RSIM
-```
-
----
-
-## 📚 Integration with RSIM
-
-This module seamlessly integrates with the RSIM ecosystem:
-
-```python
-# Access through RSIM package
-from RSIM.bootstrap import CrossValidationSimulation
-
-# Follows RSIM base simulation interface
-from RSIM.core.base import BaseSimulation
-assert issubclass(CrossValidationSimulation, BaseSimulation)
-
-# Compatible with RSIM result format
-result = cv_sim.run(X, y)
-print(result.simulation_name)
-print(result.execution_time)
-print(result.statistics)
-```
-
----
-
-## 💬 Contributions
-
-Contributions are welcome! Feel free to submit pull requests to extend CV strategies, add new models, or enhance visualization capabilities.
 
 ---
 
